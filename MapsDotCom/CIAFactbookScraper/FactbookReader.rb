@@ -1,12 +1,13 @@
-#!/usr/bin/env ruby
-
-require 'nokogiri'
 require 'StringUtilities'
 require 'CIAFactbookScraper/FactbookSection'
 
 module MapsDotCom
   module CIAFactbookScraper
     class FactbookReader
+      TITLE_DIV_REGEX = /<div[^<>]*?class="category"[^<>]*?>([\w\W]*?)<\/div>/
+      DESCRIPTION_DIV_REGEX = /<div class="category_data">([\w\W]*?)<\/div>/
+
+
       def initialize(file)
         @file = file
       end
@@ -15,19 +16,12 @@ module MapsDotCom
         @sections ||= parse_cia_html
       end
 
-      #def read_cia_html_directory
-      #  Dir.open @input_directory do |d|
-      #    d.each do |f|
-      #      if f.end_with? '.html'
-      #        puts "Reading #{f}"
-      #        STDIN.gets
-      #        parse_cia_html f
-      #      end
-      #    end
-      #  end
-      #end
-
       def parse_cia_html
+        sections = []
+
+
+
+
         #filepath = File.join @input_directory, file
         #File.open filepath, 'r' do |f|
           page = Nokogiri.HTML @file
@@ -67,7 +61,7 @@ module MapsDotCom
           end
         #end
 
-        return sections
+        sections
       end
 
       #def parse_base_section_children(section)
