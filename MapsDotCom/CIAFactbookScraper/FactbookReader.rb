@@ -4,10 +4,10 @@ require 'CIAFactbookScraper/FactbookSection'
 module MapsDotCom
   module CIAFactbookScraper
     class FactbookReader
-      TITLE_DIV_REGEX = /<div[^<>]*?class="category"[^<>]*?>([\w\W]*?)<\/div>/
-      DESCRIPTION_DIV_REGEX = /<div class="category_data">([\w\W]*?)<\/div>/
-
-
+      TITLE_DIV_REGEX = /<([\S]+)[^>]*class="category"[^>]*>(.*?)<\/\1>/m
+      #DESCRIPTION_DIV_REGEX = /<div class="category_data">([\w\W]*?)<\/div>/m
+      #DESCRIPTION_DIV_REGEX = /([^<>]+)<[^>]*class="category_data"[^>]*>(.*?)<\/[^>]*>/m
+      DESCRIPTION_DIV_REGEX = /<([\S]+)[^>]*class="category_data"[^>]*>(.*?)<\/\1>/m
       def initialize(file)
         @file = file
       end
@@ -17,65 +17,62 @@ module MapsDotCom
       end
 
       def parse_cia_html
-        sections = []
+        cia_html = @file.read
+        @file.rewind
 
+        begin
+          title_match = TITLE_DIV_REGEX.match cia_html
+          break if title_match.nil?
 
+          cia_html = title_match.post_match
 
-
-        #filepath = File.join @input_directory, file
-        #File.open filepath, 'r' do |f|
-          page = Nokogiri.HTML @file
-
-          sections = []
-          category_divs = page.css 'div.category'
-          category_divs.each do |c|
-            #puts 'category_html: ' + c.to_html
-
-            title = 'undefined'
-            if (c.css 'a').empty?
-              c.children.each do |n|
-                if n.text?
-                  title = n.text
-                  break;
-                end
-              end
-              #title = c.children.select { |n| n.text }.first
-            else
-              title = c.text
-            end
-
-            StringUtilities.collapse_whitespace! title
-
-            # a table encapsulates each field in the CIA html
-            encapsulator = c.parent
-            encapsulator = encapsulator.parent while encapsulator.name != 'table'
-
-            description = (encapsulator.css '.category_data').text
-            StringUtilities.collapse_whitespace! description
-
-            #puts 'title: ' + title
-            #puts 'description: ' + description
-            #puts; puts; puts
-
-            sections << FactbookSection.new(title, description)
+          description_match = DESCRIPTION_DIV_REGEX.match title_match[0]
+          # This logic is pretty close, the main issue is that the description
+          # for each title is duplicated as the description for the first
+          # subtitle in the title section
+          if description_match.nil?
+            puts 'title: ' + StringUtilities.html_to_text(title_match[2])
+            description_match = DESCRIPTION_DIV_REGEX.match cia_html
+            puts 'description: ' + StringUtilities.html_to_text(description_match[2])
+          else
+            title_html = title_match[0].gsub description_match[0], ''
+            puts 'subtitle: ' + StringUtilities.html_to_text(title_html)
+            puts 'description: ' + StringUtilities.html_to_text(description_match[2])
           end
-        #end
 
-        sections
-      end
+          #if title_match[0].include? description_match[0]
+          #  title_html = title_match[0].gsub description_match[0], ''
+          #  puts 'subtitle: ' + title_html
+          #  puts 'description: ' + description_match[0]
+          #  cia_html = title_match.post_match
+          #else
+          #  puts 'title: ' + title_match[2]
+          #  puts 'description: ' + description_match[0]
+          #  cia_html = description_match.post_match
+          #end
 
-      #def parse_base_section_children(section)
-      #  cats =
-      #  categories = section.css 'div.category'
-      #  categories.each do |c|
-      #    puts 'cat-content: ' + c.content.strip
-      #    #puts 'anchor: %p' % [(c.css 'a').first]
-      #    #content = (c.css 'a').first.text.strip
-      #    #puts 'content: ' + content
-      #  end
+        end while true
+
+      #  begin
+      #    title_match = TITLE_DIV_REGEX.match cia_html
+      #    break if title_match.nil?
+      #    #puts 'title_match: ' + title_match[0]
+      #    title = StringUtilities.html_to_text title_match[1]
+      #    puts 'title: ' + title
+      #    cia_html = title_match.post_match
       #
-      #  puts '--------'
-      #end
+      #    begin
+      #      description_match = DESCRIPTION_DIV_REGEX.match cia_html
+      #      break if description_match.nil?
+      #      puts 'subtitle: ' + StringUtilities.html_to_text(description_match[1])
+      #      puts 'description: ' + StringUtilities.html_to_text(description_match[2])
+      #      puts
+      #      cia_html = description_match.post_match
+      #    end while true
+      #
+      #    puts '------'
+      #  end while true
+      end
     end
   end
 end

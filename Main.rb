@@ -20,7 +20,7 @@ Dir.open cia_html_directory do |d|
         reader = MapsDotCom::CIAFactbookScraper::FactbookReader.new f
         sections = reader.sections
 
-        sections.each { |s| puts s.to_html }
+        #sections.each { |s| puts s.to_html }
       end
     end
   end
