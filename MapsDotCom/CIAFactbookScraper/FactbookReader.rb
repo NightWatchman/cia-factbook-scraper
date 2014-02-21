@@ -5,8 +5,6 @@ module MapsDotCom
   module CIAFactbookScraper
     class FactbookReader
       TITLE_DIV_REGEX = /<([\S]+)[^>]*class="category"[^>]*>(.*?)<\/\1>/m
-      #DESCRIPTION_DIV_REGEX = /<div class="category_data">([\w\W]*?)<\/div>/m
-      #DESCRIPTION_DIV_REGEX = /([^<>]+)<[^>]*class="category_data"[^>]*>(.*?)<\/[^>]*>/m
       DESCRIPTION_DIV_REGEX = /<([\S]+)[^>]*class="category_data"[^>]*>(.*?)<\/\1>/m
       def initialize(file)
         @file = file
@@ -22,6 +20,9 @@ module MapsDotCom
 
         sections = []
         begin
+          sections.push @section unless @section.nil?
+          puts @section.inspect unless @section.nil?
+
           title_match = TITLE_DIV_REGEX.match cia_html
           break if title_match.nil?
 
@@ -33,12 +34,6 @@ module MapsDotCom
           # subtitle in the title section
           if description_match.nil?
             description_match = DESCRIPTION_DIV_REGEX.match cia_html
-
-            sections.push @section unless @section.nil?
-
-            puts @section.inspect unless @section.nil?
-
-
             title = StringUtilities.html_to_text(title_match[2])
             description = StringUtilities.html_to_text(description_match[2])
             @section = FactbookSection.new title, description
