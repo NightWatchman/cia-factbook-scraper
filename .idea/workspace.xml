@@ -13,7 +13,7 @@
   <component name="ChangesViewManager" flattened_view="true" show_ignored="false" />
   <component name="CoverageDataManager">
     <SUITE FILE_PATH="coverage/CIA Factbook Scraper@erics_macbook.coverage" NAME="erics-macbook Coverage Results" MODIFIED="1392513682586" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="rcov" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" MODULE_NAME="CIA Factbook Scraper" />
-    <SUITE FILE_PATH="coverage/CIA Factbook Scraper@Main.coverage" NAME="Main Coverage Results" MODIFIED="1393027366524" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="rcov" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" MODULE_NAME="CIA Factbook Scraper" />
+    <SUITE FILE_PATH="coverage/CIA Factbook Scraper@Main.coverage" NAME="Main Coverage Results" MODIFIED="1393028737159" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="rcov" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" MODULE_NAME="CIA Factbook Scraper" />
   </component>
   <component name="CreatePatchCommitExecutor">
     <option name="PATCH_PATH" value="" />
@@ -27,10 +27,10 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="Main.rb" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="Main.rb" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Main.rb">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="27" column="0" selection-start="732" selection-end="732" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="561">
+            <state line="36" column="0" selection-start="941" selection-end="941" vertical-scroll-proportion="0.840625" vertical-offset="74" max-vertical-offset="714">
               <folding />
             </state>
           </provider>
@@ -63,10 +63,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="M101FactbookSectionRenderer.rb" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="M101FactbookSectionRenderer.rb" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/MapsDotCom/CIAFactbookScraper/M101FactbookSectionRenderer.rb">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="33" column="65" selection-start="1451" selection-end="1451" vertical-scroll-proportion="0.4848485" vertical-offset="257" max-vertical-offset="884">
+            <state line="29" column="42" selection-start="1241" selection-end="1241" vertical-scroll-proportion="0.0" vertical-offset="104" max-vertical-offset="884">
               <folding />
             </state>
           </provider>
@@ -91,16 +91,16 @@
         <option value="$PROJECT_DIR$/factbook-html/bn.html" />
         <option value="$PROJECT_DIR$/MapsDotCom/StringUtilities.rb" />
         <option value="$PROJECT_DIR$/MapsDotCom/CIAFactbookScraper/factbook_section_renderer.rb" />
-        <option value="$PROJECT_DIR$/Main.rb" />
         <option value="$PROJECT_DIR$/MapsDotCom/CIAFactbookScraper/FactbookSection.rb" />
         <option value="$PROJECT_DIR$/MapsDotCom/CIAFactbookScraper/FactbookReader.rb" />
         <option value="$PROJECT_DIR$/MapsDotCom/CIAFactbookScraper/M101FactbookSectionRenderer.rb" />
+        <option value="$PROJECT_DIR$/Main.rb" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="2134" />
-    <option name="y" value="8" />
+    <option name="x" value="2104" />
+    <option name="y" value="19" />
     <option name="width" value="1295" />
     <option name="height" value="985" />
   </component>
@@ -313,7 +313,7 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="2134" y="8" width="1295" height="985" extended-state="0" />
+    <frame x="2104" y="19" width="1295" height="985" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -671,13 +671,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Main.rb">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="27" column="0" selection-start="732" selection-end="732" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="561">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/MapsDotCom/CIAFactbookScraper/FactbookSection.rb">
       <provider selected="true" editor-type-id="text-editor">
         <state line="21" column="7" selection-start="648" selection-end="648" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="510">
@@ -694,7 +687,14 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/MapsDotCom/CIAFactbookScraper/M101FactbookSectionRenderer.rb">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="33" column="65" selection-start="1451" selection-end="1451" vertical-scroll-proportion="0.4848485" vertical-offset="257" max-vertical-offset="884">
+        <state line="29" column="42" selection-start="1241" selection-end="1241" vertical-scroll-proportion="0.0" vertical-offset="104" max-vertical-offset="884">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Main.rb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="36" column="0" selection-start="941" selection-end="941" vertical-scroll-proportion="0.840625" vertical-offset="74" max-vertical-offset="714">
           <folding />
         </state>
       </provider>
