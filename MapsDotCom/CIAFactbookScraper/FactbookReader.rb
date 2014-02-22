@@ -20,19 +20,27 @@ module MapsDotCom
 
         sections = []
         begin
-          sections.push @section unless @section.nil?
-          puts @section.inspect unless @section.nil?
-
           title_match = TITLE_DIV_REGEX.match cia_html
           break if title_match.nil?
 
           cia_html = title_match.post_match
+
+          if title_match[2].include? 'country comparison to the world'
+            title = 'country comparison to the world:'
+            description_match = DESCRIPTION_DIV_REGEX.match title_match.post_match
+            description = StringUtilities.html_to_text description_match[2]
+            @section.add_sub_section FactbookSection.new title, description
+            next
+          end
 
           description_match = DESCRIPTION_DIV_REGEX.match title_match[0]
           # This logic is pretty close, the main issue is that the description
           # for each title is duplicated as the description for the first
           # subtitle in the title section
           if description_match.nil?
+            sections.push @section unless @section.nil?
+            #puts @section.inspect unless @section.nil?
+
             description_match = DESCRIPTION_DIV_REGEX.match cia_html
             title = StringUtilities.html_to_text(title_match[2])
             description = StringUtilities.html_to_text(description_match[2])
