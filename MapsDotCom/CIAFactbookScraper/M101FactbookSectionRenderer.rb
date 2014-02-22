@@ -27,21 +27,18 @@ class M101FactbookSectionRenderer
           }
         }
 
-        if section.sub_sections.empty?
-          html.div(class: 'category_data') {
-            html.text section.description
-          }
-        else
-          html.div(class: 'category_data') {
-            section.sub_sections.each do |s|
+        html.div(class: 'category_data') {
+          html.text section.description
+          unless section.sub_sections.empty?
+            section.sub_sections.each_with_index do |s, i|
+              html.br unless i == 0 && section.description.empty?
               html.span(class: 'category_data-subtitle') {
-                html.text s.title
+                html.text s.title + ' '
               }
               html.text s.description
-              html.br
             end
-          }
-        end
+          end
+        }
       }
     end
     html.to_html.gsub /<!DOCTYPE((.|\n|\r)*?)>/, ''
