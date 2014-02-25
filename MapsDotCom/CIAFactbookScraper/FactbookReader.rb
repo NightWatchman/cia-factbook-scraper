@@ -6,18 +6,25 @@ module MapsDotCom
     class FactbookReader
       TITLE_DIV_REGEX = /<([\S]+)[^>]*class="category"[^>]*>(.*?)<\/\1>/m
       DESCRIPTION_DIV_REGEX = /<([\S]+)[^>]*class="category_data"[^>]*>(.*?)<\/\1>/m
+      UPDATED_NOTICE_REGEX = /Page last updated on ([^<]+)/m
       def initialize(file)
-        @file = file
+        @cia_html = file.read
       end
 
       def sections
-        @sections ||= parse_cia_html
+        @sections ||= parse_cia_html_field_sections
       end
 
-      def parse_cia_html
-        cia_html = @file.read
-        @file.rewind
+      def updated
+        begin
+          @updated ||= UPDATED_NOTICE_REGEX.match(@cia_html)[1].strip
+        rescue
+          @updated = ''
+        end
+      end
 
+      def parse_cia_html_field_sections
+        cia_html = @cia_html
         sections = []
         begin
           title_match = TITLE_DIV_REGEX.match cia_html

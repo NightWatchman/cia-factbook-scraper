@@ -3,7 +3,7 @@ $: << File.expand_path(File.dirname(__FILE__) + '/MapsDotCom/')
 require 'rubygems'
 require 'bundler/setup'
 require 'CIAFactbookScraper/FactbookReader'
-require 'CIAFactbookScraper/M101FactbookSectionRenderer'
+require 'CIAFactbookScraper/M101FactbookRenderer'
 
 cia_html_directory = ARGV.first
 unless Dir.exists? cia_html_directory
@@ -23,12 +23,12 @@ Dir.open cia_html_directory do |d|
 
       File.open(File.join(d.path, filename), 'r') do |input|
         reader = MapsDotCom::CIAFactbookScraper::FactbookReader.new input
-        sections = reader.sections
+        #sections = reader.sections
 
         puts "Writing #{filename}"
 
         File.open(File.join(output_dir, filename), 'w') do |output|
-          output.puts(M101FactbookSectionRenderer.to_html sections)
+          output.puts(M101FactbookRenderer.to_html reader)
         end
       end
     end

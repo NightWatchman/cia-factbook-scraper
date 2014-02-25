@@ -1,14 +1,25 @@
 require 'Nokogiri'
 
-class M101FactbookSectionRenderer
+class M101FactbookRenderer
   DEFINITIONS_AND_NOTES_URL = 'http://blog.maps.com/maps101-test/index.php?option=com_flexicontent&view=items&id=12721:definitions-a-notes'
   FIELD_DESCRIPTIONS_URL = '/maps101-test/index.php?option=com_flexicontent&view=items&id=12723&f=2028'
   FIELD_DESCRIPTION_ICON_URL = 'http://blog.maps.com/maps101-test/images/field_listing_on.gif'
+  DOCTYPE_REGEX = /<!DOCTYPE((.|\n|\r)*?)>/
 
-  def self.to_html(section)
+  def self.to_html(factbook_reader)
+    doc = Nokogiri::HTML::Builder.new do |html|
+      html.p {
+        html.text 'Page last updated on ' + factbook_reader.updated
+      } unless factbook_reader.updated.empty?
+    end
+    html = doc.to_html.gsub DOCTYPE_REGEX, ''
+    html << section_html(factbook_reader.sections)
+  end
+
+  def self.section_html(section)
     if section.respond_to? :each
       html = ''
-      section.each { |s| html << $/ + to_html(s) }
+      section.each { |s| html << $/ + section_html(s) }
       return html
     end
 
@@ -41,6 +52,6 @@ class M101FactbookSectionRenderer
         }
       }
     end
-    html.to_html.gsub /<!DOCTYPE((.|\n|\r)*?)>/, ''
+    html.to_html.gsub DOCTYPE_REGEX, ''
   end
 end
