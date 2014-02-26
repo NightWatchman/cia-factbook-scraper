@@ -6,16 +6,20 @@ class M101FactbookRenderer
   FIELD_DESCRIPTION_ICON_URL = 'http://blog.maps.com/maps101-test/images/field_listing_on.gif'
   DOCTYPE_REGEX = /<!DOCTYPE((.|\n|\r)*?)>/
 
-  def self.to_html(factbook_reader)
+  def initialize(factbook_reader)
+    @factbook_reader = factbook_reader
+  end
+
+  def to_html
     doc = Nokogiri::HTML::DocumentFragment.parse ''
     Nokogiri::HTML::Builder.with doc do |html|
       html.p {
-        html.text 'Page last updated on ' + factbook_reader.updated
-      } unless factbook_reader.updated.empty?
+        html.text 'Page last updated on ' + @factbook_reader.updated
+      } unless @factbook_reader.updated.empty?
 
       html.text "\n\n"
 
-      factbook_reader.sections.each do |s|
+      @factbook_reader.sections.each do |s|
         section_html s, doc
         html.text "\n\n"
       end
@@ -25,8 +29,12 @@ class M101FactbookRenderer
 
   private
 
-  def self.section_html(section, doc)
+  def section_html(section, doc)
     Nokogiri::HTML::Builder.with doc do |html|
+      html << section_category_header(section)
+
+      html.text "\n"
+
       html.div(class: 'stats-section', style: 'overflow: hidden') {
         html.div(class: 'sa-light neat_row', style: 'overflow: hidden') {
           html.div(style: 'width: 50%; float: left;') {
@@ -55,5 +63,93 @@ class M101FactbookRenderer
         }
       }
     end
+  end
+
+  def section_category_header(section)
+    category_header = Nokogiri::HTML::DocumentFragment.parse ''
+    Nokogiri::HTML::Builder.with category_header do |html|
+      @completed_categories ||= Hash.new(false)
+      if section.title.start_with? 'Telephone'
+        unless @completed_categories['comm']
+          html.div(class: 'section-category') {
+            html.a(name: 'comm') {
+              html.text 'Communications:'
+            }
+          }
+          @completed_categories['comm'] = true
+        end
+      elsif section.title.start_with? 'Airport'
+        unless @completed_categories['trans']
+          html.div(class: 'section-category') {
+            html.a(name: 'trans') {
+              html.text 'Transportation:'
+            }
+            @completed_categories['trans'] = true
+          }
+        end
+      elsif section.title.start_with? 'Military'
+        unless @completed_categories['military']
+          html.div(class: 'section-category') {
+            html.a(name: 'military') {
+              html.text 'Military:'
+            }
+            @completed_categories['military'] = true
+          }
+        end
+      elsif section.title.start_with?('Disputes') || \
+            section.title.start_with?('Refugees') || \
+            section.title.start_with?('Trafficking') || \
+            section.title.start_with?('Illicit')
+        unless @completed_categories['issues']
+          html.div(class: 'section-category') {
+            html.a(name: 'issues') {
+              html.text 'Transnational Issues:'
+            }
+            @completed_categories['issues'] = true
+          }
+        end
+      else
+        #noinspection RubyCaseWithoutElseBlockInspection
+        case section.title
+          when 'Background:'
+            html.div(class: 'section-category') {
+              html.a(name: 'intro') {
+                html.text 'Introduction:'
+              }
+            }
+          when 'Location:'
+            html.div(class: 'section-category') {
+              html.a(name: 'geo') {
+                html.text 'Geography:'
+              }
+            }
+          when 'Nationality:'
+            html.div(class: 'section-category') {
+              html.a(name: 'people') {
+                html.text 'People and Society:'
+              }
+            }
+          when 'Country name:'
+            html.div(class: 'section-category') {
+              html.a(name: 'govt') {
+                html.text 'Government:'
+              }
+            }
+          when 'Economy - overview:'
+            html.div(class: 'section-category') {
+              html.a(name: 'econ') {
+                html.text 'Economy:'
+              }
+            }
+          when 'Electricity - production:'
+            html.div(class: 'section-category') {
+              html.a(name: 'energy') {
+                html.text 'Energy:'
+              }
+            }
+        end
+      end
+    end
+    category_header.to_html
   end
 end

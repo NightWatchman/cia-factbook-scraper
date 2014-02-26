@@ -28,7 +28,8 @@ Dir.open cia_html_directory do |d|
         puts "Writing #{filename}"
 
         File.open(File.join(output_dir, filename), 'w') do |output|
-          output.puts(M101FactbookRenderer.to_html reader)
+          renderer = M101FactbookRenderer.new reader
+          output.puts(renderer.to_html)
         end
       end
     end
