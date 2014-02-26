@@ -7,23 +7,26 @@ class M101FactbookRenderer
   DOCTYPE_REGEX = /<!DOCTYPE((.|\n|\r)*?)>/
 
   def self.to_html(factbook_reader)
-    doc = Nokogiri::HTML::Builder.new do |html|
+    doc = Nokogiri::HTML::DocumentFragment.parse ''
+    Nokogiri::HTML::Builder.with doc do |html|
       html.p {
         html.text 'Page last updated on ' + factbook_reader.updated
       } unless factbook_reader.updated.empty?
+
+      html.text "\n\n"
+
+      factbook_reader.sections.each do |s|
+        section_html s, doc
+        html.text "\n\n"
+      end
     end
-    html = doc.to_html.gsub DOCTYPE_REGEX, ''
-    html << section_html(factbook_reader.sections)
+    doc.to_html
   end
 
-  def self.section_html(section)
-    if section.respond_to? :each
-      html = ''
-      section.each { |s| html << $/ + section_html(s) }
-      return html
-    end
+  private
 
-    html = Nokogiri::HTML::Builder.new do |html|
+  def self.section_html(section, doc)
+    Nokogiri::HTML::Builder.with doc do |html|
       html.div(class: 'stats-section', style: 'overflow: hidden') {
         html.div(class: 'sa-light neat_row', style: 'overflow: hidden') {
           html.div(style: 'width: 50%; float: left;') {
@@ -52,6 +55,5 @@ class M101FactbookRenderer
         }
       }
     end
-    html.to_html.gsub DOCTYPE_REGEX, ''
   end
 end
